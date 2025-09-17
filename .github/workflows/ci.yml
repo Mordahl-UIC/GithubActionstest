@@ -13,7 +13,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         java: [8, 11, 17, 21, 25]
 
-    name: JDK ${{ matrix.java }} on ${{ matrix.os }}
+    name: Workflow JDK ${{ matrix.java }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
 
     steps:
