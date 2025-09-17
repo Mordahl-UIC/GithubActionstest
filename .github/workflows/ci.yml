@@ -42,5 +42,10 @@ jobs:
       - name: Build
         run: sbt clean compile
 
-      - name: Test
+      - name: Test (1)
+        if: ${{ matrix.os == macos-latest }}
         run: sbt test
+
+      - name: Test (2)
+        if: ${{ matrix.os != macos-latest }}
+        run: sbt "testOnly -- --exclude-tags=macos"
