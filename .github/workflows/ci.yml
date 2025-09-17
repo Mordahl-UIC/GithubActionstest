@@ -8,7 +8,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        java: [8, 11, 17, 21, 25]
+
+    name: JDK ${{ matrix.java }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout repository
@@ -18,8 +24,16 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: '21'
-          cache: sbt
+          java-version: ${{ matrix.java }}
+
+      - name: Cache SBT
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.sbt
+            ~/.ivy2
+            ~/.coursier
+          key: ${{ matrix.os }}-${{matrix.java}}-sbt-${{ hashFiles('~/.sbt', '~/.ivy2', '~/.coursier') }}
 
       - name: Setup scala
         uses: sbt/setup-sbt@v1
